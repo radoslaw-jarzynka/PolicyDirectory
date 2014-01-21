@@ -209,6 +209,7 @@ namespace PolicyDirectory {
                                 SPacket pck = new SPacket(myAddr.ToString(), _senderAddr.ToString(), "ERROR");
                                 whatToSendQueue.Enqueue(pck);
                             }
+                            //gdy żądanie listy klientów
                         } else if (_msgList[0] == "REQ_CLIENTS") {
                             List<string> clients = new List<string>();
                             clients.Add("CLIENTS");
@@ -225,6 +226,7 @@ namespace PolicyDirectory {
                             }
                             SPacket pck = new SPacket(myAddr.ToString(), _senderAddr.ToString(), clients);
                             whatToSendQueue.Enqueue(pck);
+                            //gdy żądanie połączenia
                         } else if (_msgList[0] == "REQ_CALL") {
                             try {
                                 bool canCall = false;

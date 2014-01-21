@@ -128,7 +128,7 @@
             this.clientInfoBox.Size = new System.Drawing.Size(200, 100);
             this.clientInfoBox.TabIndex = 33;
             this.clientInfoBox.TabStop = false;
-            this.clientInfoBox.Text = "clientInfoBox";
+            this.clientInfoBox.Text = "Informacje o Kliencie";
             // 
             // clientSpeedBox
             // 
