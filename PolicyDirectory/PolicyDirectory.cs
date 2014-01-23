@@ -143,6 +143,7 @@ namespace PolicyDirectory {
                         argsToShow += str + " ";
                     }
                     if (isDebug) SetText("Wysłano: " + _pck.getSrc() + ":" + _pck.getDest() + ":" + argsToShow);
+                    Thread.Sleep(50);
                 }
             }
         }
