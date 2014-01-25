@@ -23,7 +23,7 @@ namespace PolicyDirectory {
 
         delegate void SetTextCallback(string text);
 
-        private static Address myAddr = new Address(0,0,2);
+        private static Address myAddr = new Address(0,0,1);
 
         private class userData {
             public string userName;
