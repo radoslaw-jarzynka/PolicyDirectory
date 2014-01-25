@@ -239,7 +239,7 @@ namespace PolicyDirectory {
                                 List<string> response = new List<string>();
                                 if (canCall) {
                                     foreach (userData ud in userList) {
-                                        if (ud.userName != _msgList[1]) {
+                                        if (ud.userName == _msgList[1]) {
                                             response.Add("YES");
                                             response.Add(ud.userAddr.ToString());
                                         }
