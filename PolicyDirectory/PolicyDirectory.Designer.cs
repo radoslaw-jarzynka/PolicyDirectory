@@ -205,7 +205,7 @@
             this.Controls.Add(this.conToCloudButton);
             this.Controls.Add(this.log);
             this.Name = "PolicyDirectory";
-            this.Text = "Policy & Directory";
+            this.Text = "Policy & Directory 0.0.1";
             this.clientInfoBox.ResumeLayout(false);
             this.clientInfoBox.PerformLayout();
             this.ResumeLayout(false);
