@@ -51,6 +51,8 @@ namespace PolicyDirectory {
         private Queue _whatToSendQueue;
         private Queue whatToSendQueue;
 
+        private int exceptionCount;
+
         //strumienie
         private NetworkStream networkStream;
         //lista klientów
@@ -62,6 +64,7 @@ namespace PolicyDirectory {
 
 
         public PolicyDirectory() {
+            exceptionCount = 0;
             userList = new List<userData>();
             isConnectedToCloud = false;
             isDebug = true;
@@ -116,6 +119,7 @@ namespace PolicyDirectory {
                         sendThread.Start();
                         conToCloudButton.Text = "Rozłącz";
                         SetText("Połączono!");
+                        exceptionCount = 0;
                     } catch (SocketException) {
                         isConnectedToCloud = false;
                         SetText("Błąd podczas łączenia się z chmurą");
@@ -255,6 +259,14 @@ namespace PolicyDirectory {
                     }
                 } catch {
                     SetText("Coś poszło nie tak");
+                    if (++exceptionCount == 5) {
+                        this.Invoke((MethodInvoker)delegate() {
+                            isConnectedToCloud = false;
+                            conToCloudButton.Text = "Połącz";
+                            SetText("Rozłączono!");
+                            if (cloudSocket != null) cloudSocket.Close();
+                        });
+                    }
                 }
             }
         }
