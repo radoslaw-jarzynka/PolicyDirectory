@@ -108,7 +108,7 @@ namespace PolicyDirectory {
                         //reader = new StreamReader(networkStream);
                         List<String> _welcArr = new List<String>();
                         _welcArr.Add("HELLO");
-                        SPacket welcomePacket = new SPacket(myAddr.ToString(), new Address(0, 0, 0).ToString(), _welcArr);
+                        SPacket welcomePacket = new SPacket(myAddr.ToString(), new Address(1, 0, 1).ToString(), _welcArr);
                         whatToSendQueue.Enqueue(welcomePacket);
                         //whatToSendQueue.Enqueue("HELLO " + myAddr);
                         receiveThread = new Thread(this.receiver);
@@ -185,7 +185,7 @@ namespace PolicyDirectory {
                                 bool tempIsOk = true;
                                 userData tempUser = null;
                                 foreach (userData ud in userList) {
-                                    if (ud.userName == usr || ud.userAddr.ToString() == _senderAddr.ToString()) {
+                                    if (ud.userName == usr /*|| ud.userAddr.ToString() == _senderAddr.ToString()*/) {
                                         tempIsOk = false;
                                         tempUser = ud;
                                     }
@@ -207,7 +207,7 @@ namespace PolicyDirectory {
                                         selectedClientBox_SelectedIndexChanged();
                                     });
                                 } else {
-                                    SPacket pck = new SPacket(myAddr.ToString(), _senderAddr.ToString(), "NAME_OR_ADDR_TAKEN_BY " + tempUser.userName + " WITH_ADDR " + tempUser.userAddr);
+                                    SPacket pck = new SPacket(myAddr.ToString(), _senderAddr.ToString(), "NAME_TAKEN");
                                     whatToSendQueue.Enqueue(pck);
                                 }
                             } catch {
