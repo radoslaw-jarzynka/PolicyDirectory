@@ -180,8 +180,8 @@ namespace PolicyDirectory {
                         //gdy logowanie się
                         if (_msgList[0] == "LOGIN") {
                             try {
-                                string usr = _msgList[1];
-                                Address usrAddr = _senderAddr;
+                                Address usrAddr = Address.Parse(_msgList[1]);
+                                string usr = _msgList[2];
                                 bool tempIsOk = true;
                                 userData tempUser = null;
                                 foreach (userData ud in userList) {
@@ -201,13 +201,21 @@ namespace PolicyDirectory {
                                     this.Invoke((MethodInvoker)delegate() {
                                         selectedClientBox.DataSource = bs;
                                     });
-                                    SPacket pck = new SPacket(myAddr.ToString(), _senderAddr.ToString(), "OK");
+                                    List<string> _msg = new List<string>();
+                                    _msg.Add("LOGGED");
+                                    _msg.Add(usrAddr.ToString());
+                                    _msg.Add(usr);
+                                    SPacket pck = new SPacket(myAddr.ToString(), _senderAddr.ToString(), _msg);
                                     whatToSendQueue.Enqueue(pck);
                                     this.Invoke((MethodInvoker)delegate() {
                                         selectedClientBox_SelectedIndexChanged();
                                     });
                                 } else {
-                                    SPacket pck = new SPacket(myAddr.ToString(), _senderAddr.ToString(), "NAME_TAKEN");
+                                    List<string> _msg = new List<string>();
+                                    _msg.Add("NAME_TAKEN");
+                                    _msg.Add(usrAddr.ToString());
+                                    _msg.Add(usr);
+                                    SPacket pck = new SPacket(myAddr.ToString(), _senderAddr.ToString(), _msg);
                                     whatToSendQueue.Enqueue(pck);
                                 }
                             } catch {
@@ -218,37 +226,47 @@ namespace PolicyDirectory {
                         } else if (_msgList[0] == "REQ_CLIENTS") {
                             List<string> clients = new List<string>();
                             clients.Add("CLIENTS");
-                            String callerName = String.Empty; 
+                            clients.Add(_msgList[1]);
+                            String callerName = String.Empty; /*
                             foreach (userData ud in userList) {
                                 if (ud.userAddr == _senderAddr) {
                                     callerName = ud.userName;
                                 }
-                            }
+                            }*/
                             foreach (userData ud in userList) {
-                                if (ud.userName != callerName) {
+                                //if (ud.userName != callerName) {
                                     clients.Add(ud.userName);
-                                }
+                                //}
                             }
                             SPacket pck = new SPacket(myAddr.ToString(), _senderAddr.ToString(), clients);
                             whatToSendQueue.Enqueue(pck);
                             //gdy żądanie połączenia
                         } else if (_msgList[0] == "REQ_CALL") {
                             try {
+                                Address usrAddr = Address.Parse(_msgList[1]);
                                 bool canCall = false;
                                 foreach (userData ud in userList) {
-                                    if (ud.userAddr.ToString() == _senderAddr.ToString()) {
-                                        if (ud.canReq && int.Parse(_msgList[2]) <= ud.userCap) canCall = true;
+                                    if (ud.userAddr.ToString() == usrAddr.ToString()) {
+                                        if (ud.canReq && int.Parse(_msgList[3]) <= ud.userCap) canCall = true;
                                     }
                                 }
                                 List<string> response = new List<string>();
                                 if (canCall) {
                                     foreach (userData ud in userList) {
-                                        if (ud.userName == _msgList[1]) {
-                                            response.Add("YES");
+                                        if (ud.userName == _msgList[2]) {
+                                            response.Add("OK");
+                                            response.Add(usrAddr.ToString());
+                                            response.Add(ud.userName);
+                                            response.Add(_msgList[3]);
                                             response.Add(ud.userAddr.ToString());
                                         }
                                     }
-                                } else response.Add("NO");
+                                } else {
+                                    response.Add("NO");
+                                    response.Add(usrAddr.ToString());
+                                    response.Add(_msgList[2]);
+                                    response.Add(_msgList[3]);
+                                }
                                 SPacket pck = new SPacket(myAddr.ToString(), _senderAddr.ToString(), response);
                                 whatToSendQueue.Enqueue(pck);
                             } catch {
