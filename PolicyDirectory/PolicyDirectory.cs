@@ -121,7 +121,7 @@ namespace PolicyDirectory {
                         sendThread = new Thread(this.sender);
                         sendThread.IsBackground = true;
                         sendThread.Start();
-                        conToCloudButton.Text = "Rozłącz";
+                        //conToCloudButton.Text = "Rozłącz";
                         SetText("Połączono!");
                         exceptionCount = 0;
                     } catch (SocketException) {
