@@ -79,6 +79,10 @@ namespace PolicyDirectory {
             BindingSource bs = new BindingSource();
             bs.DataSource = speedList;
             clientSpeedBox.DataSource = bs;
+            (new Thread(new ThreadStart(() => {
+                Thread.Sleep(1500);
+                conToCloudButton_Click(this, new EventArgs());
+            }))).Start();
         }
         /// <summary>
         /// metoda wywołana po wciśnięciu "połącz z chmurą"
